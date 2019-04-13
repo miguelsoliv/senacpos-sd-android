@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="FabStyle" parent="FabBaseStyle">
+        <item name="fabSize">mini</item>
+    </style>
+
+    <style name="FabCartStyle" parent="FabCartBaseStyle">
+        <item name="android:layout_margin">4dp</item>
+    </style>
+</resources>
