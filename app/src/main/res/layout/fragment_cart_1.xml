@@ -15,13 +15,10 @@
 
     <EditText
         android:id="@+id/editObs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        style="@style/EditTextStyle"
+        android:layout_margin="@dimen/margin_medium"
         android:hint="Observação do Pedido (Opcional)"
         android:inputType="text"
-        android:paddingTop="24dp"
         tools:ignore="Autofill" />
 
     <LinearLayout

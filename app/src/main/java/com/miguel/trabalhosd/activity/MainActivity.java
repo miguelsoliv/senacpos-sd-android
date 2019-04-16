@@ -1,4 +1,4 @@
-/**
+/*
  * MIT License
  *
  * Copyright (c) 2019 Miguel Soares de Oliveira
@@ -84,12 +84,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Handle navigation view item clicks
         switch (menuItem.getItemId()) {
             case R.id.nav_login_register:
+                startActivity(new Intent(this, LoginRegisterActivity.class));
+                finish();
                 break;
             case R.id.nav_my_cart:
                 startActivity(new Intent(this, CartActivity.class));
                 finish();
-                break;
-            case R.id.nav_logout:
                 break;
         }
 

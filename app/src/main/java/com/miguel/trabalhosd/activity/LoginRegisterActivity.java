@@ -24,17 +24,39 @@
 
 package com.miguel.trabalhosd.activity;
 
-import android.content.Intent;
-import android.os.Bundle;
+import android.content.DialogInterface;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
-public class SplashScreenActivity extends AppCompatActivity {
+import com.miguel.trabalhosd.R;
+import com.miguel.trabalhosd.Utils;
+import com.miguel.trabalhosd.adapter.LoginTabPagerAdapter;
+
+public class LoginRegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login_register);
 
-        startActivity(new Intent(this, LoginRegisterActivity.class));
-        finish();
+        LoginTabPagerAdapter loginTabPagerAdapter = new LoginTabPagerAdapter(getSupportFragmentManager());
+
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(loginTabPagerAdapter);
+
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Utils.makeDialog(this, "Sair", "Deseja sair do aplicativo?",
+                "Não", "Sim", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                    }
+                }).show();
     }
 }

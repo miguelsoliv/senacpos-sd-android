@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/margin_medium"
+    android:paddingTop="@dimen/margin_medium"
+    android:paddingRight="@dimen/margin_medium"
+    tools:ignore="HardcodedText,Autofill,MissingConstraints">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textLogo"
+                style="@style/TextBaseStyle"
+                android:text="Trabalho"
+                android:textSize="55dp"
+                app:fontFamily="cursive"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editEmail"
+                style="@style/EditTextBigBaseStyle"
+                android:layout_marginTop="@dimen/margin_short"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress"
+                android:maxLength="70"
+                app:layout_constraintTop_toBottomOf="@+id/textLogo" />
+
+            <EditText
+                android:id="@+id/editPasswd"
+                style="@style/EditTextBigBaseStyle"
+                android:layout_marginTop="@dimen/margin_mini"
+                android:hint="Senha (mínimo 6 carac.)"
+                android:inputType="textPassword"
+                android:maxLength="30"
+                app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+
+            <EditText
+                android:id="@+id/editConfPasswd"
+                style="@style/EditTextBigBaseStyle"
+                android:layout_marginTop="@dimen/margin_mini"
+                android:hint="Confirme sua Senha"
+                android:inputType="textPassword"
+                android:maxLength="30"
+                app:layout_constraintTop_toBottomOf="@+id/editPasswd" />
+
+            <EditText
+                android:id="@+id/editCpf"
+                style="@style/EditTextBigBaseStyle"
+                android:layout_width="0dp"
+                android:layout_marginTop="@dimen/margin_mini"
+                android:layout_marginEnd="@dimen/margin_mini"
+                android:layout_marginRight="@dimen/margin_mini"
+                android:hint="CPF"
+                android:inputType="number"
+                android:maxLength="14"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/editPhone"
+                app:layout_constraintTop_toBottomOf="@+id/editConfPasswd" />
+
+            <EditText
+                android:id="@+id/editPhone"
+                style="@style/EditTextBigBaseStyle"
+                android:layout_width="0dp"
+                android:layout_marginTop="@dimen/margin_mini"
+                android:hint="Celular"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="10"
+                app:layout_constraintHorizontal_weight="0.75"
+                app:layout_constraintLeft_toRightOf="@id/editCpf"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editConfPasswd"
+                tools:ignore="TextFields" />
+
+            <Button
+                android:id="@+id/btRegister"
+                style="@style/ButtonBaseStyle"
+                android:layout_marginTop="@dimen/margin_short"
+                android:layout_marginBottom="@dimen/margin_short"
+                android:text="Registrar"
+                app:layout_constraintTop_toBottomOf="@+id/editPhone" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

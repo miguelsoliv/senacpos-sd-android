@@ -22,7 +22,6 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </android.support.design.widget.AppBarLayout>
 
@@ -42,13 +41,11 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/background_light"
-            android:paddingStart="@dimen/margin_medium"
             android:paddingLeft="@dimen/margin_medium"
-            android:paddingEnd="@dimen/margin_medium"
             android:paddingRight="@dimen/margin_medium">
 
             <ImageButton
-                android:id="@+id/btBack"
+                android:id="@+id/imageBtBack"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,7 +59,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="ContentDescription">
 
                 <ImageView
                     android:id="@+id/indicator0"
@@ -70,8 +68,7 @@
                     android:layout_height="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="@drawable/indicator_unselected"
-                    tools:ignore="ContentDescription" />
+                    android:background="@drawable/indicator_unselected" />
 
                 <ImageView
                     android:id="@+id/indicator1"
@@ -79,17 +76,24 @@
                     android:layout_height="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="@drawable/indicator_unselected"
-                    tools:ignore="ContentDescription" />
+                    android:background="@drawable/indicator_unselected" />
 
                 <ImageView
                     android:id="@+id/indicator2"
-                    style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="8dp"
                     android:layout_height="8dp"
-                    android:background="@drawable/indicator_unselected"
-                    tools:ignore="ContentDescription" />
+                    android:background="@drawable/indicator_unselected" />
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/imageBtNext"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                android:contentDescription="Next"
+                android:padding="@dimen/margin_medium"
+                android:src="@drawable/ic_arrow_right" />
 
             <Button
                 android:id="@+id/btFinish"
@@ -100,16 +104,6 @@
                 android:text="Finalizar"
                 android:textColor="@android:color/black"
                 android:visibility="gone" />
-
-            <ImageButton
-                android:id="@+id/btNext"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center"
-                android:contentDescription="Next"
-                android:padding="@dimen/margin_medium"
-                android:src="@drawable/ic_arrow_right" />
         </FrameLayout>
     </LinearLayout>
 

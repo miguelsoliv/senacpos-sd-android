@@ -1,6 +1,8 @@
 <resources>
     <style name="AppTheme" parent="BaseTheme" />
 
+    <style name="AppThemeStatusBarNonTransparent" parent="BaseTheme" />
+
     <style name="TextStyle" parent="TextBaseStyle" />
 
     <style name="ButtonStyle" parent="ButtonBaseStyle" />
@@ -9,6 +11,10 @@
 
     <style name="FabStyle" parent="FabBaseStyle" />
 
+    <style name="WindowAnimationStyle">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+    </style>
+
     <style name="BaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -16,6 +22,8 @@
         <item name="colorPrimary">@color/color_primary</item>
         <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorAccent">@color/color_accent</item>
+
+        <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
     </style>
 
     <style name="SplashScreen.Fullscreen" parent="Theme.AppCompat.NoActionBar">
@@ -24,21 +32,36 @@
     </style>
 
     <style name="TextBaseStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">17sp</item>
     </style>
 
     <style name="ButtonBaseStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/color_primary</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">17sp</item>
     </style>
 
-    <style name="EditTextBaseStyle" parent="TextBaseStyle">
-        <item name="android:layout_height">50dp</item>
-        <item name="android:background">@color/background_light</item>
-        <item name="android:paddingLeft">6dp</item>
-        <item name="android:paddingRight">6dp</item>
+    <style name="EditTextBaseStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/edit_spinner_height</item>
+        <item name="android:background">@drawable/background_edit_text</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="EditTextBigBaseStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">55dp</item>
+        <item name="android:background">@drawable/background_edit_text</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
     </style>
 
     <style name="FabBaseStyle">

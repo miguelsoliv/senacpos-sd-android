@@ -22,9 +22,33 @@
  * SOFTWARE.
  */
 
-package com.miguel.trabalhosd.model;
+package com.miguel.trabalhosd.adapter;
 
-public class Product {
-    private String name, description;
-    private double price;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+
+import com.miguel.trabalhosd.fragment.LoginPlaceholderFragment;
+
+public class LoginTabPagerAdapter extends FragmentPagerAdapter {
+    private String[] titles = {"Logar", "Registrar"};
+
+    public LoginTabPagerAdapter(FragmentManager fm) {
+        super(fm);
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+        return LoginPlaceholderFragment.newInstance(position + 1);
+    }
+
+    @Override
+    public int getCount() {
+        return 2;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return titles[position];
+    }
 }

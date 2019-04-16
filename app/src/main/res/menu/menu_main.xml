@@ -3,14 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="HardcodedText">
 
-    <group
-        android:id="@+id/groupUnlogged"
-        android:checkableBehavior="none">
-        <item
-            android:id="@+id/nav_login_register"
-            android:icon="@drawable/ic_person"
-            android:title="Entrar/Cadastrar" />
-    </group>
+    <item
+        android:id="@+id/itemDadosConta"
+        android:title="Minha Conta">
+        <menu>
+            <item
+                android:id="@+id/nav_login_register"
+                android:icon="@drawable/ic_person"
+                android:title="Entrar/Cadastrar" />
+        </menu>
+    </item>
 
     <group
         android:id="@+id/groupMain"
@@ -24,15 +26,4 @@
             android:icon="@drawable/ic_cart"
             android:title="Meu Carrinho" />
     </group>
-
-    <item
-        android:id="@+id/itemDadosConta"
-        android:title="Minha Conta">
-        <menu>
-            <item
-                android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_exit"
-                android:title="Sair" />
-        </menu>
-    </item>
 </menu>

@@ -8,21 +8,12 @@
     android:padding="@dimen/margin_medium"
     tools:ignore="HardcodedText">
 
-    <TextView
-        style="@style/TextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="Cupom de Desconto (Opcional):" />
-
     <EditText
         android:id="@+id/editCoupon"
-        style="@style/TextStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:hint="Cupom de Desconto"
+        style="@style/EditTextStyle"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:hint="Cupom de Desconto (Opcional)"
         android:inputType="text"
         android:maxLength="15"
         android:textAlignment="center"

@@ -1,4 +1,4 @@
-/**
+/*
  * MIT License
  *
  * Copyright (c) 2019 Miguel Soares de Oliveira
@@ -45,8 +45,6 @@ import com.miguel.trabalhosd.adapter.CartPagerAdapter;
 
 public class CartActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private int page = 0;
-    private ImageButton btNext, btBack;
-    private Button btFinish;
     private ImageView[] indicators;
     private ViewPager viewPager;
 
@@ -68,9 +66,9 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_my_cart);
 
-        btNext = findViewById(R.id.btNext);
-        btBack = findViewById(R.id.btBack);
-        btFinish = findViewById(R.id.btFinish);
+        final ImageButton imageBtNext = findViewById(R.id.imageBtNext);
+        final ImageButton imageBtBack = findViewById(R.id.imageBtBack);
+        final Button btFinish = findViewById(R.id.btFinish);
 
         CartPagerAdapter carrinhoPagerAdapter = new CartPagerAdapter(getSupportFragmentManager());
         indicators = new ImageView[]{findViewById(R.id.indicator0),
@@ -93,8 +91,8 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
                 page = position;
                 updateIndicators(page);
 
-                btBack.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
-                btNext.setVisibility(position == 2 ? View.GONE : View.VISIBLE);
+                imageBtBack.setVisibility(position == 0 ? View.GONE : View.VISIBLE);
+                imageBtNext.setVisibility(position == 2 ? View.GONE : View.VISIBLE);
                 btFinish.setVisibility(position == 2 ? View.VISIBLE : View.GONE);
             }
 
@@ -103,7 +101,7 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        btNext.setOnClickListener(new View.OnClickListener() {
+        imageBtNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 page += 1;
@@ -111,7 +109,7 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        btBack.setOnClickListener(new View.OnClickListener() {
+        imageBtBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 page -= 1;
@@ -132,12 +130,12 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks
         switch (menuItem.getItemId()) {
             case R.id.nav_login_register:
+                startActivity(new Intent(this, LoginRegisterActivity.class));
+                finish();
                 break;
             case R.id.nav_menu:
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
-                break;
-            case R.id.nav_logout:
                 break;
         }
 
