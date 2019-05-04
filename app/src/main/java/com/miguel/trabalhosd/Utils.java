@@ -29,8 +29,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -42,7 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public abstract class Utils {
-    public static String unmask(String string) {
+    private static String unmask(String string) {
         return string.replaceAll("[.]", "").replaceAll("[-]", "")
                 .replaceAll("[/]", "").replaceAll("[(]", "")
                 .replaceAll("[)]", "").replaceAll(" ", "")
@@ -158,12 +156,6 @@ public abstract class Utils {
         });
 
         return dialog;
-    }
-
-    public static boolean hasConnection(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = cm.getActiveNetworkInfo();
-        return (info != null && info.isConnected());
     }
 
     public static void hideKeyboard(Activity activity) {

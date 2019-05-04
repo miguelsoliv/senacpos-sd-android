@@ -24,6 +24,7 @@
 
 package com.miguel.trabalhosd.activity;
 
+import android.animation.Animator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -35,13 +36,23 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.miguel.trabalhosd.CircleAnimationUtil;
 import com.miguel.trabalhosd.R;
+import com.miguel.trabalhosd.adapter.ProductsListAdapter;
+import com.miguel.trabalhosd.model.Product;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     @Override
@@ -67,15 +78,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Animation fabAnimation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         fab.startAnimation(fabAnimation);
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        List<Product> productsList = new ArrayList<>();
+
+        for (int i = 1; i < 6; i++) {
+            productsList.add(new Product("Nome do Produto " + i, "Descrição do Produto " + i, i + i));
+        }
+
+        ProductsListAdapter adapter = new ProductsListAdapter(this, productsList);
+        recyclerView.setAdapter(adapter);
+        adapter.setActionListener(new ProductsListAdapter.ProductItemActionListener() {
+            @Override
+            public void onItemTap(ImageView imageView) {
+                if (imageView != null)
+                    makeFlyAnimation(imageView);
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fabCart:
-                startActivity(new Intent(this, CartActivity.class));
-                finish();
-                break;
+        if (v.getId() == R.id.fabCart) {
+            startActivity(new Intent(this, CartActivity.class));
+            finish();
         }
     }
 
@@ -114,5 +142,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     }).create().show();
         }
+    }
+
+    private void makeFlyAnimation(ImageView targetView) {
+        FloatingActionButton destView = findViewById(R.id.fabCart);
+
+        new CircleAnimationUtil().attachActivity(this).setTargetView(targetView).setMoveDuration(1000)
+                .setDestView(destView).setAnimationListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                Toast.makeText(MainActivity.this, "Continue Shopping...", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+            }
+        }).startAnimation();
     }
 }
