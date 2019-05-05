@@ -161,6 +161,7 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
                     pedido.append(MainActivity.getCartList().get(i).getQuant());
                     pedido.append(" x ");
                     pedido.append(MainActivity.getCartList().get(i).getNome());
+                    pedido.append(" | ");
                 }
 
                 StringBuilder endereco = new StringBuilder();
