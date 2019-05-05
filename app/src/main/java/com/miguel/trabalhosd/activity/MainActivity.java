@@ -46,6 +46,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.miguel.trabalhosd.CircleAnimationUtil;
 import com.miguel.trabalhosd.R;
 import com.miguel.trabalhosd.adapter.ProductsListAdapter;
@@ -55,10 +60,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+    private static List<Product> cartList = new ArrayList<>();
+    private static double subTotal = 0;
+    private List<Product> productsList;
+    private ProductsListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.getWindow().setBackgroundDrawable(getResources().getDrawable(R.drawable.white_background));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,22 +91,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Animation fabAnimation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
         fab.startAnimation(fabAnimation);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        productsList = new ArrayList<>();
+
+        final RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Product> productsList = new ArrayList<>();
-
-        for (int i = 1; i < 6; i++) {
-            productsList.add(new Product("Nome do Produto " + i, "Descrição do Produto " + i, i + i));
-        }
-
-        ProductsListAdapter adapter = new ProductsListAdapter(this, productsList);
-        recyclerView.setAdapter(adapter);
+        adapter = new ProductsListAdapter(MainActivity.this, productsList);
         adapter.setActionListener(new ProductsListAdapter.ProductItemActionListener() {
             @Override
-            public void onItemTap(ImageView imageView) {
-                if (imageView != null)
-                    makeFlyAnimation(imageView);
+            public void onItemTap(Product prod, ImageView imageView) {
+                if (imageView != null) {
+                    makeFlyAnimation(imageView, prod);
+                }
+            }
+        });
+
+        recyclerView.setAdapter(adapter);
+
+        DatabaseReference productsDBReference = FirebaseDatabase.getInstance().getReference("produtos");
+        productsDBReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                productsList.clear();
+
+                for (DataSnapshot productSnapshot : dataSnapshot.getChildren()) {
+                    Product prod = productSnapshot.getValue(Product.class);
+                    prod.setId(productSnapshot.getKey());
+                    productsList.add(prod);
+                }
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
     }
@@ -103,21 +133,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == R.id.fabCart) {
             startActivity(new Intent(this, CartActivity.class));
-            finish();
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        // Handle navigation view item clicks
         switch (menuItem.getItemId()) {
             case R.id.nav_login_register:
                 startActivity(new Intent(this, LoginRegisterActivity.class));
-                finish();
                 break;
             case R.id.nav_my_cart:
                 startActivity(new Intent(this, CartActivity.class));
-                finish();
                 break;
         }
 
@@ -144,18 +170,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void makeFlyAnimation(ImageView targetView) {
-        FloatingActionButton destView = findViewById(R.id.fabCart);
+    private void makeFlyAnimation(ImageView targetView, final Product prod) {
+        final FloatingActionButton destView = findViewById(R.id.fabCart);
 
         new CircleAnimationUtil().attachActivity(this).setTargetView(targetView).setMoveDuration(1000)
                 .setDestView(destView).setAnimationListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
+                boolean check = false;
+                for (int i = 0; i < cartList.size(); i++) {
+                    if (cartList.get(i).getId().equals(prod.getId())) {
+                        cartList.get(i).setQuant(cartList.get(i).getQuant() + 1);
+                        check = true;
+                        break;
+                    }
+                }
+
+                if (!check) {
+                    prod.setQuant(1);
+                    cartList.add(prod);
+                }
+
+                subTotal += prod.getPreco();
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                Toast.makeText(MainActivity.this, "Continue Shopping...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Produto adicionado no carrinho", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -166,5 +207,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onAnimationRepeat(Animator animation) {
             }
         }).startAnimation();
+    }
+
+    public static List<Product> getCartList() {
+        return cartList;
+    }
+
+    public static double getSubTotal() {
+        return subTotal;
+    }
+
+    public static void checkout() {
+        cartList.clear();
+        subTotal = 0;
     }
 }

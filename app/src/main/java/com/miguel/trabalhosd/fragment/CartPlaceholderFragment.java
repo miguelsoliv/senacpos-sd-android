@@ -27,11 +27,17 @@ package com.miguel.trabalhosd.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.miguel.trabalhosd.R;
+import com.miguel.trabalhosd.Utils;
+import com.miguel.trabalhosd.activity.MainActivity;
+import com.miguel.trabalhosd.adapter.CartListAdapter;
 
 public class CartPlaceholderFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -55,12 +61,29 @@ public class CartPlaceholderFragment extends Fragment {
             switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
                 case 1:
                     rootView = inflater.inflate(R.layout.fragment_cart_1, container, false);
+
+                    RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                    CartListAdapter adapter = new CartListAdapter(getContext());
+                    recyclerView.setAdapter(adapter);
+
+                    TextView textSubTotal = rootView.findViewById(R.id.textSubTotal);
+
+                    if (MainActivity.getSubTotal() == 0) {
+                        textSubTotal.setText("R$ 0,00");
+                    } else {
+                        textSubTotal.setText(Utils.applyDecimalFormat(MainActivity.getSubTotal()));
+                    }
                     break;
                 case 2:
                     rootView = inflater.inflate(R.layout.fragment_cart_2, container, false);
                     break;
                 default:
                     rootView = inflater.inflate(R.layout.fragment_cart_3, container, false);
+
+                    TextView textTotal = rootView.findViewById(R.id.textTotal);
+                    textTotal.setText(Utils.applyDecimalFormat(MainActivity.getSubTotal() + 9.9));
                     break;
             }
         }

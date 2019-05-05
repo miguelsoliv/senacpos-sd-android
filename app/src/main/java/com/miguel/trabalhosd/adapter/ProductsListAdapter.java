@@ -25,23 +25,26 @@
 package com.miguel.trabalhosd.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.makeramen.roundedimageview.RoundedTransformationBuilder;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.miguel.trabalhosd.R;
+import com.miguel.trabalhosd.Utils;
+import com.miguel.trabalhosd.model.ImageUrl;
 import com.miguel.trabalhosd.model.Product;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.List;
 
 public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapter.ProductViewHolder> {
@@ -66,24 +69,34 @@ public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final ProductViewHolder holder, int position) {
-        Product product = productsList.get(position);
+        final Product product = productsList.get(position);
 
-        holder.textName.setText(product.getName());
-        holder.textDesc.setText(product.getDescription());
-        holder.textPrice.setText("R$ " + applyDecimalFormat(product.getPrice()));
+        holder.textName.setText(product.getNome());
+        holder.textType.setText(product.getTipo());
+        holder.textDesc.setText(product.getDescricao());
+        holder.textPrice.setText(Utils.applyDecimalFormat(product.getPreco()));
 
-        Transformation transformation = new RoundedTransformationBuilder()
-                .borderColor(Color.BLACK).borderWidthDp(0).cornerRadiusDp(15)
-                .oval(false).build();
+        DatabaseReference urlsDBReference = FirebaseDatabase.getInstance().getReference("imagensUrl")
+                .child(product.getId());
+        urlsDBReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot urlSnapshot : dataSnapshot.getChildren()) {
+                    Picasso.get().load(urlSnapshot.getValue(ImageUrl.class).getURL()).fit().into(holder.imgPhoto);
+                    Picasso.get().load(urlSnapshot.getValue(ImageUrl.class).getURL()).fit().into(holder.imgPhotoCopy);
+                }
+            }
 
-        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/senacpos-sd.appspot.com/o/-LdUxzITDZyOj7XS4ZJI?alt=media&token=69000c34-8619-4ab0-8da8-11bf954f440b").fit().transform(transformation).into(holder.imgPhoto);
-        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/senacpos-sd.appspot.com/o/-LdUxzITDZyOj7XS4ZJI?alt=media&token=69000c34-8619-4ab0-8da8-11bf954f440b").fit().transform(transformation).into(holder.imgPhotoCopy);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
-        holder.imgPhotoCopy.setOnClickListener(new View.OnClickListener() {
+        holder.btAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (actionListener != null)
-                    actionListener.onItemTap(holder.imgPhotoCopy);
+                    actionListener.onItemTap(product, holder.imgPhotoCopy);
             }
         });
     }
@@ -94,30 +107,23 @@ public class ProductsListAdapter extends RecyclerView.Adapter<ProductsListAdapte
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
-        private TextView textName, textDesc, textPrice;
+        private TextView textName, textType, textDesc, textPrice;
         private ImageView imgPhoto, imgPhotoCopy;
+        private Button btAdd;
 
         ProductViewHolder(View itemView) {
             super(itemView);
             textName = itemView.findViewById(R.id.textName);
+            textType = itemView.findViewById(R.id.textType);
             textDesc = itemView.findViewById(R.id.textDesc);
             textPrice = itemView.findViewById(R.id.textPrice);
             imgPhoto = itemView.findViewById(R.id.imgPhoto);
             imgPhotoCopy = itemView.findViewById(R.id.imgPhotoCopy);
+            btAdd = itemView.findViewById(R.id.btAdd);
         }
     }
 
     public interface ProductItemActionListener {
-        void onItemTap(ImageView imageView);
-    }
-
-    private String applyDecimalFormat(double value) {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        DecimalFormat decimalFormat = new DecimalFormat("#,###.00", symbols);
-
-        symbols.setGroupingSeparator('.');
-        symbols.setDecimalSeparator(',');
-
-        return "" + decimalFormat.format(value);
+        void onItemTap(Product prod, ImageView imageView);
     }
 }

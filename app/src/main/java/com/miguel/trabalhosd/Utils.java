@@ -24,20 +24,18 @@
 
 package com.miguel.trabalhosd;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.PorterDuff;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 public abstract class Utils {
     private static String unmask(String string) {
@@ -113,18 +111,14 @@ public abstract class Utils {
         };
     }
 
-    @SuppressLint("ShowToast")
-    public static Toast makeCustomToast(Context context, String text, int duration) {
-        Toast toast = Toast.makeText(context, text, duration);
-        View view = toast.getView();
+    public static String applyDecimalFormat(double value) {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator('.');
+        symbols.setDecimalSeparator(',');
 
-        view.getBackground().setColorFilter(ContextCompat.getColor(context,
-                R.color.background_toast), PorterDuff.Mode.SRC_IN);
+        DecimalFormat decimalFormat = new DecimalFormat("#,###.00", symbols);
 
-        TextView message = view.findViewById(android.R.id.message);
-        message.setTextColor(ContextCompat.getColor(context, android.R.color.white));
-
-        return toast;
+        return "R$ " + decimalFormat.format(value);
     }
 
     public static AlertDialog makeDialog(Context context, String title, String message,
@@ -135,35 +129,6 @@ public abstract class Utils {
                 .setMessage(message)
                 .setNegativeButton(negativeText, null)
                 .setPositiveButton(positiveText, positiveClick).create();
-    }
-
-    // Prevent dialog from closing when a button is clicked
-    public static AlertDialog makeDialog(Context context, String title, View view,
-                                         String negativeText, String positiveText,
-                                         final View.OnClickListener positiveClick) {
-        final AlertDialog dialog = new AlertDialog.Builder(context)
-                .setTitle(title)
-                .setView(view)
-                .setNegativeButton(negativeText, null)
-                .setPositiveButton(positiveText, null) // Set to null. We override the onclick
-                .create();
-
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(positiveClick);
-            }
-        });
-
-        return dialog;
-    }
-
-    public static void hideKeyboard(Activity activity) {
-        View v = activity.getCurrentFocus();
-        if (v != null) {
-            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        }
     }
 
     public static void hideKeyboardFragment(Context context, View view) {

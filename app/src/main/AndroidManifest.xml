@@ -27,8 +27,7 @@
         <activity android:name=".activity.CartActivity" />
         <activity
             android:name=".activity.LoginRegisterActivity"
-            android:theme="@style/AppThemeStatusBarNonTransparent">
-        </activity>
+            android:theme="@style/AppThemeStatusBarNonTransparent" />
     </application>
 
 </manifest>

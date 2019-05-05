@@ -34,14 +34,24 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.miguel.trabalhosd.R;
 import com.miguel.trabalhosd.adapter.CartPagerAdapter;
+import com.miguel.trabalhosd.model.Order;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CartActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private int page = 0;
@@ -120,6 +130,55 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         btFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EditText editName = findViewById(R.id.editName);
+                EditText editCel = findViewById(R.id.editCel);
+                EditText editAddress = findViewById(R.id.editAddress);
+                EditText editNumber = findViewById(R.id.editNumber);
+                EditText editComplem = findViewById(R.id.editComplem);
+                RadioGroup radioGroupPay = findViewById(R.id.radioGroupPay);
+
+                if (MainActivity.getCartList().size() == 0) {
+                    return;
+                }
+
+                if (editName.getText() == null || editCel.getText() == null) {
+                    return;
+                }
+
+                if (editAddress.getText() == null || editNumber.getText() == null) {
+                    return;
+                }
+
+                if (radioGroupPay.getCheckedRadioButtonId() == -1) {
+                    return;
+                }
+
+                DatabaseReference orderDBReference = FirebaseDatabase.getInstance().getReference("pedidos");
+                String id = orderDBReference.push().getKey();
+
+                StringBuilder pedido = new StringBuilder();
+                for (int i = 0; i < MainActivity.getCartList().size(); i++) {
+                    pedido.append(MainActivity.getCartList().get(i).getQuant());
+                    pedido.append(" x ");
+                    pedido.append(MainActivity.getCartList().get(i).getNome());
+                }
+
+                StringBuilder endereco = new StringBuilder();
+                endereco.append(editAddress.getText().toString());
+                endereco.append(" ");
+                endereco.append(editNumber.getText().toString());
+                endereco.append(" ");
+                endereco.append(editComplem.getText().toString());
+
+                RadioButton radioButton = findViewById(radioGroupPay.getCheckedRadioButtonId());
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM HH:mm:ss");
+                String date = sdf.format(new Date());
+
+                Order order = new Order(editName.getText().toString(), pedido.toString(), endereco.toString(),
+                        radioButton.getText().toString(), date, editCel.getText().toString(), MainActivity.getSubTotal());
+
+                orderDBReference.child(id).setValue(order);
+                MainActivity.checkout();
                 finish();
             }
         });
@@ -127,14 +186,12 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        // Handle navigation view item clicks
         switch (menuItem.getItemId()) {
             case R.id.nav_login_register:
                 startActivity(new Intent(this, LoginRegisterActivity.class));
                 finish();
                 break;
             case R.id.nav_menu:
-                startActivity(new Intent(this, MainActivity.class));
                 finish();
                 break;
         }
@@ -150,12 +207,11 @@ public class CartActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            startActivity(new Intent(this, MainActivity.class));
             finish();
         }
     }
 
-    private  void updateIndicators(int position) {
+    private void updateIndicators(int position) {
         for (int i = 0; i < indicators.length; i++) {
             indicators[i].setBackgroundResource(
                     i == position ? R.drawable.indicator_selected : R.drawable.indicator_unselected

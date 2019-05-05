@@ -24,50 +24,17 @@
 
 package com.miguel.trabalhosd.model;
 
-public class Product {
-    private String Id, Nome, Descricao, Tipo;
-    private double Preco;
-    private int Quant;
+public class ImageUrl {
+    private String URL;
 
-    public Product() {
+    public ImageUrl() {
     }
 
-    public Product(String Nome, String Descricao, String Tipo, double Preco) {
-        this.Nome = Nome;
-        this.Descricao = Descricao;
-        this.Tipo = Tipo;
-        this.Preco = Preco;
+    public ImageUrl(String URL) {
+        this.URL = URL;
     }
 
-    public String getId() {
-        return Id;
-    }
-
-    public void setId(String Id) {
-        this.Id = Id;
-    }
-
-    public String getNome() {
-        return Nome;
-    }
-
-    public String getDescricao() {
-        return Descricao;
-    }
-
-    public String getTipo() {
-        return Tipo;
-    }
-
-    public double getPreco() {
-        return Preco;
-    }
-
-    public int getQuant() {
-        return Quant;
-    }
-
-    public void setQuant(int Quant) {
-        this.Quant = Quant;
+    public String getURL() {
+        return URL;
     }
 }

@@ -8,6 +8,43 @@
     android:padding="@dimen/margin_medium"
     tools:ignore="HardcodedText">
 
+    <TextView
+        style="@style/TextStyle"
+        android:layout_width="wrap_content"
+        android:layout_margin="@dimen/margin_medium"
+        android:text="Forma de Pagamento" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupPay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/margin_medium"
+        android:paddingBottom="@dimen/margin_medium">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Dinheiro"
+            android:textColor="@android:color/black" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cartão (Débito)"
+            android:textColor="@android:color/black" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cartão (Crédito)"
+            android:textColor="@android:color/black" />
+    </RadioGroup>
+
     <EditText
         android:id="@+id/editCoupon"
         style="@style/EditTextStyle"
